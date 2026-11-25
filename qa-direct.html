@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071B35">
+  <meta name="description" content="Un pequeño universo tricolor hecho con amor, exclusivamente para vos.">
+  <title>Nacional te amo · Un lugar para vos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets/three.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body class="is-locked">
+
+  <!-- Silueta de corazón reutilizable para recortar la escultura y la foto. -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+        <path d="M0.5 0.955C0.445 0.885 0.055 0.63 0.055 0.345C0.055 0.16 0.19 0.035 0.345 0.035C0.425 0.035 0.478 0.082 0.5 0.145C0.522 0.082 0.575 0.035 0.655 0.035C0.81 0.035 0.945 0.16 0.945 0.345C0.945 0.63 0.555 0.885 0.5 0.955Z"></path>
+      </clipPath>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <!-- ============================================================
+       ACCESO PRIVADO
+       La contraseña se valida en script.js. No se guarda en el navegador.
+       ============================================================ -->
+  <section id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate-backdrop" aria-hidden="true">
+      <span class="gate-orb gate-orb--blue"></span>
+      <span class="gate-orb gate-orb--red"></span>
+      <span class="gate-orb gate-orb--white"></span>
+      <span class="gate-grid"></span>
+      <span class="gate-heart gate-heart--1"><i></i></span>
+      <span class="gate-heart gate-heart--2"><i></i></span>
+      <span class="gate-heart gate-heart--3"><i></i></span>
+      <span class="gate-heart gate-heart--4"><i></i></span>
+      <span class="gate-heart gate-heart--5"><i></i></span>
+    </div>
+
+    <div class="gate-shell">
+      <div class="gate-brand" aria-label="Nacional y amor">
+        <span class="tricolor-dot" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>NACIONAL</span>
+        <span class="gate-brand-x" aria-hidden="true">×</span>
+        <span>AMOR</span>
+      </div>
+
+      <div class="gate-card" id="gate-card">
+        <div class="gate-card-shine" aria-hidden="true"></div>
+        <span class="gate-eyebrow">UN LUGAR MUY ESPECIAL</span>
+        <h1 id="gate-title">Hay un lugar al que solamente <em>vos</em> podés entrar...</h1>
+        <p class="gate-subtitle">Esta pequeña sorpresa tiene una única destinataria.</p>
+
+        <form id="gate-form" class="gate-form" novalidate>
+          <label for="password">Tu llave secreta</label>
+          <div class="password-field">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="off"
+              autocapitalize="none"
+              spellcheck="false"
+              aria-describedby="password-hint password-error"
+              placeholder="Escribí la contraseña"
+              required
+            >
+            <button type="button" class="password-toggle" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false">
+              <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                <circle cx="12" cy="12" r="2.7"></circle>
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m4 4 16 16M9.9 5.2A10.8 10.8 0 0 1 12 5c6 0 9.5 6 9.5 6a15.6 15.6 0 0 1-2.3 3M6.2 6.8C3.8 8.4 2.5 11 2.5 11s3.5 6 9.5 6a10 10 0 0 0 4.3-.9"></path>
+              </svg>
+            </button>
+          </div>
+
+          <p id="password-hint" class="gate-hint">Pista: tres colores, un sentimiento y un número.</p>
+          <p id="password-error" class="form-error" role="alert" aria-live="polite"></p>
+
+          <button type="submit" class="btn btn-primary gate-submit" id="gate-submit">
+            <span class="btn-label">Descubrir mi sorpresa</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+            <span class="gate-success-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"></path></svg>
+            </span>
+          </button>
+        </form>
+
+        <div class="gate-card-footer">
+          <span class="gate-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5"></rect><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"></path></svg>
+          </span>
+          Hecho con amor, exclusivamente para vos.
+        </div>
+      </div>
+
+      <p class="gate-footnote">Un pequeño universo azul, rojo y blanco. Como nosotros.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIENCIA PRINCIPAL
+       ============================================================ -->
+  <div class="experience" id="experience" inert aria-hidden="true">
+    <div class="reading-progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+    <header class="site-header" id="site-header">
+      <a href="#inicio" class="brand" aria-label="Volver al universo de la experiencia">
+        <span class="tricolor-dot" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-word">NACIONAL</span>
+        <span class="brand-heart" aria-hidden="true">♥</span>
+        <span class="brand-word brand-word--light">AMOR</span>
+      </a>
+
+      <div class="header-right">
+        <span class="current-section" id="current-section" aria-hidden="true">01 · Universo</span>
+        <button class="index-toggle" id="index-toggle" type="button" aria-haspopup="dialog" aria-controls="index-dialog">
+          <span class="index-toggle-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+          Índice
+        </button>
+      </div>
+    </header>
+
+    <aside class="section-rail" aria-label="Indicador de secciones">
+      <nav>
+        <a href="#inicio" data-section-dot="inicio" aria-label="Ir al Universo"><span>01</span></a>
+        <a href="#corazon" data-section-dot="corazon" aria-label="Ir al Corazón tricolor"><span>02</span></a>
+        <a href="#carta" data-section-dot="carta" aria-label="Ir a la Carta"><span>03</span></a>
+        <a href="#momentos" data-section-dot="momentos" aria-label="Ir a Nuestros momentos"><span>04</span></a>
+        <a href="#sonrisas" data-section-dot="sonrisas" aria-label="Ir al Rincón de las sonrisas"><span>05</span></a>
+        <a href="#razones" data-section-dot="razones" aria-label="Ir a Pequeñas razones"><span>06</span></a>
+        <a href="#terminos" data-section-dot="terminos" aria-label="Ir a los Términos y condiciones"><span>07</span></a>
+        <a href="#sobres" data-section-dot="sobres" aria-label="Ir a los Sobres secretos"><span>08</span></a>
+        <a href="#regalo" data-section-dot="regalo" aria-label="Ir al Regalo sorpresa"><span>09</span></a>
+      </nav>
+    </aside>
+
+    <main id="contenido">
+
+      <!-- ===================== UNIVERSO 3D ===================== -->
+      <section class="universe" id="inicio" data-nav-section aria-labelledby="hero-title">
+        <div class="universe-ambient" aria-hidden="true">
+          <span class="universe-orb universe-orb--blue"></span>
+          <span class="universe-orb universe-orb--red"></span>
+          <span class="universe-orb universe-orb--white"></span>
+          <span class="universe-grid"></span>
+        </div>
+
+        <div class="universe-inner">
+          <header class="universe-intro">
+            <p class="eyebrow eyebrow--light universe-eyebrow" data-reveal>
+              <span class="eyebrow-line" aria-hidden="true"></span>
+              Un universo hecho para vos
+            </p>
+
+            <h2 class="universe-title" id="hero-title" data-reveal>
+              Bienvenida a <em>nuestro universo</em>.
+            </h2>
+
+            <p class="universe-copy" id="hero-copy" data-reveal>
+              Tres colores, una foto tuya en el centro y todo lo que siento, flotando alrededor.
+            </p>
+
+            <p class="universe-note" data-reveal>
+              <span class="universe-note-heart" aria-hidden="true">♥</span>
+              Tu foto es el centro. Todo lo demás gira alrededor de vos.
+            </p>
+          </header>
+
+          <div class="universe-stage" id="universe-stage">
+            <div class="universe-backdrop" aria-hidden="true"></div>
+
+            <canvas
+              class="universe-canvas"
+              id="universe-canvas"
+              role="img"
+              tabindex="0"
+              aria-label="Universo romántico tridimensional con una fotografía central y decoraciones tricolores"
+              aria-describedby="universe-hint"
+            ></canvas>
+
+            <!-- Escena simplificada para dispositivos sin WebGL o de menor capacidad. -->
+            <div class="universe-fallback" id="universe-fallback" aria-hidden="true">
+              <div class="fallback-halo"></div>
+              <span class="fallback-ring fallback-ring--blue"></span>
+              <span class="fallback-ring fallback-ring--red"></span>
+              <span class="fallback-ring fallback-ring--white"></span>
+
+              <span class="fallback-heart fallback-heart--1"></span>
+              <span class="fallback-heart fallback-heart--2"></span>
+              <span class="fallback-heart fallback-heart--3"></span>
+              <span class="fallback-heart fallback-heart--4"></span>
+              <span class="fallback-heart fallback-heart--5"></span>
+
+              <span class="fallback-star fallback-star--1" aria-hidden="true">✦</span>
+              <span class="fallback-star fallback-star--2" aria-hidden="true">✦</span>
+              <span class="fallback-star fallback-star--3" aria-hidden="true">✦</span>
+              <span class="fallback-star fallback-star--4" aria-hidden="true">✦</span>
+
+              <span class="fallback-gift fallback-gift--1" aria-hidden="true"></span>
+              <span class="fallback-gift fallback-gift--2" aria-hidden="true"></span>
+
+              <figure class="fallback-photo-wrap" id="fallback-photo-wrap">
+                <div class="fallback-photo" id="fallback-photo">
+                  <img
+                    id="universe-fallback-img"
+                    src="assets/foto-central.jpg"
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                  >
+                  <span class="fallback-photo-placeholder">
+                    <span class="placeholder-stripes" aria-hidden="true"><i></i><i></i><i></i></span>
+                    <strong>Tu foto acá</strong>
+                    <span>assets/foto-central.jpg</span>
+                    <small>Reemplazá el archivo por tu fotografía</small>
+                  </span>
+                  <span class="fallback-photo-tint" aria-hidden="true"></span>
+                  <span class="fallback-photo-sheen" aria-hidden="true"></span>
+                </div>
+                <figcaption class="fallback-ribbon">
+                  <span>TE AMO</span>
+                  <span aria-hidden="true">❤️💙🤍</span>
+                </figcaption>
+              </figure>
+            </div>
+
+            <div class="universe-phrases" aria-hidden="true">
+              <span class="universe-phrase universe-phrase--1">Sos mi persona favorita</span>
+              <span class="universe-phrase universe-phrase--2">Mi lugar favorito es con vos</span>
+              <span class="universe-phrase universe-phrase--3">Siempre vos</span>
+              <span class="universe-phrase universe-phrase--4">Te elegiría una y mil veces</span>
+              <span class="universe-phrase universe-phrase--5">Mi corazón tiene tres colores</span>
+            </div>
+
+            <div class="universe-loader" id="universe-loader" role="status" aria-live="polite">
+              <span class="universe-loader-rings" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span id="universe-loader-text">Para cabeza de pingo dea, joda teamo</span>
+            </div>
+
+            <p class="universe-photo-note" id="universe-photo-note" hidden>
+              <span class="universe-photo-note-dot" aria-hidden="true"></span>
+              <span>Tu foto va acá: <strong>assets/foto-central.jpg</strong></span>
+            </p>
+
+            <div class="universe-controls" id="universe-controls" role="group" aria-label="Controles del universo 3D">
+              <button class="universe-control" id="universe-zoom-in" type="button" aria-label="Acercar la cámara">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+              </button>
+              <button class="universe-control" id="universe-zoom-out" type="button" aria-label="Alejar la cámara">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path></svg>
+              </button>
+              <button class="universe-control" id="universe-reset" type="button" aria-label="Volver a la vista inicial">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7"></path><path d="M20 4v5h-5"></path></svg>
+              </button>
+              <button class="universe-control" id="universe-gyro" type="button" aria-pressed="false" aria-label="Activar el movimiento con giroscopio">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="2.4"></rect><path d="M10.2 18.7h3.6"></path><path d="M4.4 9.2a8 8 0 0 0 0 5.6M19.6 9.2a8 8 0 0 1 0 5.6"></path></svg>
+              </button>
+            </div>
+
+            <p class="universe-hint" id="universe-hint">
+              Arrastrá para girar · Pellizcá o usá + y − para acercarte
+            </p>
+            <p class="universe-status" id="universe-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="universe-foot" data-reveal>
+            <a class="universe-scroll" href="#corazon" data-scroll>
+              <span>Seguí bajando, hay más para vos</span>
+              <i aria-hidden="true"></i>
+            </a>
+            <a href="#carta" class="btn btn-universe" data-scroll>
+              Abrir mi carta
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+
+        <span class="universe-divider" aria-hidden="true"></span>
+      </section>
+
+      <!-- ===================== CORAZÓN 3D ===================== -->
+      <section class="section heart-section" id="corazon" data-nav-section aria-labelledby="heart-title">
+        <div class="heart-section-bg" aria-hidden="true">
+          <span class="heart-bg-orb heart-bg-orb--blue"></span>
+          <span class="heart-bg-orb heart-bg-orb--red"></span>
+          <span class="heart-bg-line"></span>
+        </div>
+
+        <div class="section-inner">
+          <header class="section-heading section-heading--center" data-reveal>
+            <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>El corazón de todo esto</p>
+            <h2 id="heart-title">Mi corazón tiene <em>tres colores</em>...</h2>
+            <p class="section-lede">Y entre todos sus colores, hay un lugar reservado para vos.</p>
+          </header>
+
+          <div class="heart-stage" data-reveal>
+            <div class="heart-aura" aria-hidden="true"></div>
+            <div class="heart-orbit heart-orbit--one" aria-hidden="true"></div>
+            <div class="heart-orbit heart-orbit--two" aria-hidden="true"></div>
+
+            <button class="heart-scene" id="heart-scene" type="button" aria-label="Tocar el corazón tricolor para recibir un mensaje" aria-describedby="heart-hint">
+              <span class="heart-float">
+                <span class="heart-tilt" id="heart-tilt">
+                  <span class="heart-core" id="heart-core">
+                    <span class="heart-layer heart-layer--back"></span>
+                    <span class="heart-layers" id="heart-layers" aria-hidden="true"></span>
+                    <span class="heart-glow" aria-hidden="true"></span>
+                    <span class="heart-rim" aria-hidden="true"></span>
+                    <span class="heart-cavity" aria-hidden="true"></span>
+
+                    <span class="heart-photo-wrap">
+                      <span class="heart-photo" id="heart-photo">
+                        <img id="heart-photo-img" src="assets/nacional-corazon.jpg" alt="Fotografía de Nacional integrada en el corazón tricolor" loading="eager">
+                        <span class="heart-photo-placeholder" id="heart-photo-placeholder">
+                          <span class="placeholder-stripes" aria-hidden="true"><i></i><i></i><i></i></span>
+                          <strong>Tu foto de Nacional</strong>
+                          <span>assets/nacional-corazon.jpg</span>
+                          <small>Reemplazá este archivo por tu imagen vertical</small>
+                        </span>
+                      </span>
+                      <span class="heart-photo-glass" aria-hidden="true"></span>
+                    </span>
+
+                    <span class="heart-glint" aria-hidden="true"></span>
+                    <span class="heart-spark heart-spark--one" aria-hidden="true"></span>
+                    <span class="heart-spark heart-spark--two" aria-hidden="true"></span>
+                  </span>
+                </span>
+              </span>
+            </button>
+
+            <p class="heart-hint" id="heart-hint">Tocá el corazón. Prometo que late más fuerte.</p>
+            <p class="heart-message" id="heart-message" aria-live="polite"></p>
+          </div>
+
+          <div class="heart-caption" data-reveal>
+            <p class="heart-club">NACIONAL <span aria-hidden="true">❤️💙🤍</span></p>
+            <p class="heart-quote">“No sé si el amor se explica. Pero si tuviera que intentarlo, le pondría estos tres colores y tu nombre.”</p>
+          </div>
+
+          <div class="tricolor-legend" data-reveal>
+            <article class="legend-item">
+              <span class="legend-swatch legend-swatch--blue" aria-hidden="true"></span>
+              <h3>Azul</h3>
+              <p>Mi lugar seguro. Ese donde puedo ser yo y sé que vos también vas a estar.</p>
+            </article>
+            <article class="legend-item">
+              <span class="legend-swatch legend-swatch--red" aria-hidden="true"></span>
+              <h3>Rojo</h3>
+              <p>La forma en que late esto cuando me mirás, incluso si estás lejos.</p>
+            </article>
+            <article class="legend-item">
+              <span class="legend-swatch legend-swatch--white" aria-hidden="true"></span>
+              <h3>Blanco</h3>
+              <p>Todo lo que todavía quiero construir con vos. Y lo que ya empezamos sin darnos cuenta.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== CARTA ===================== -->
+      <section class="section letter-section" id="carta" data-nav-section aria-labelledby="letter-title">
+        <div class="section-inner letter-layout">
+          <div class="letter-copy" data-reveal>
+            <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>Una carta para vos</p>
+            <h2 id="letter-title">Hay cosas que se dicen <em>mejor por escrito</em>.</h2>
+            <p class="section-lede">Este sobre guarda algo que quiero que puedas volver a leer cada vez que lo necesites.</p>
+            <p class="letter-note">
+              <span class="note-heart" aria-hidden="true">♥</span>
+              Tocá el sobre. Se va a abrir solito.
+            </p>
+          </div>
+
+          <div class="envelope-stage" data-reveal>
+            <button class="envelope" id="envelope" type="button" aria-expanded="false" aria-controls="letter-dialog" aria-label="Abrir la carta para vos">
+              <span class="envelope-shadow" aria-hidden="true"></span>
+              <span class="envelope-object">
+                <span class="envelope-letter" aria-hidden="true">
+                  <span class="envelope-letter-line"></span>
+                  <span class="envelope-letter-line envelope-letter-line--short"></span>
+                  <span class="envelope-letter-heart">♥</span>
+                </span>
+                <span class="envelope-back" aria-hidden="true"></span>
+                <span class="envelope-flap" aria-hidden="true">
+                  <span class="envelope-flap-inner"></span>
+                </span>
+                <span class="envelope-front" aria-hidden="true"></span>
+                <span class="envelope-seal" aria-hidden="true">
+                  <span class="seal-heart">♥</span>
+                </span>
+                <span class="envelope-tricolor" aria-hidden="true"></span>
+              </span>
+              <span class="envelope-cta">
+                <span class="envelope-cta-label">Abrir carta</span>
+                <span class="envelope-cta-icon" aria-hidden="true">↗</span>
+              </span>
+            </button>
+            <p class="envelope-footnote">Hecha a mano. Bueno, hecha con código. Pero con el mismo amor.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== GALERÍA ===================== -->
+      <section class="section gallery-section" id="momentos" data-nav-section aria-labelledby="gallery-title">
+        <div class="section-inner">
+          <header class="section-heading section-heading--split" data-reveal>
+            <div>
+              <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>Nuestros pequeños momentos</p>
+              <h2 id="gallery-title">Los memes también son <em>declaraciones de amor</em>.</h2>
+            </div>
+            <p class="section-lede">Una colección de imágenes que solo nos hacen gracia a nosotros. Que es, básicamente, la definición de intimidad.</p>
+          </header>
+
+          <div class="gallery-grid" id="gallery-grid">
+            <!-- Las tarjetas se generan desde CONFIG.gallery en script.js -->
+          </div>
+
+          <p class="gallery-tip" data-reveal>
+            <span aria-hidden="true">✦</span>
+            Tocá cualquier recuerdo para verlo grande. No hay orden ni jerarquía: todos son importantes.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===================== SONRISAS ===================== -->
+      <section class="section smiles-section" id="sonrisas" data-nav-section aria-labelledby="smiles-title">
+        <div class="section-inner">
+          <div class="smiles-panel" data-reveal>
+            <div class="smiles-copy">
+              <p class="eyebrow eyebrow--light"><span class="eyebrow-line" aria-hidden="true"></span>El rincón de las sonrisas</p>
+              <h2 id="smiles-title">¿Necesitás una <em>dosis de felicidad</em>?</h2>
+              <p>Yo tengo el stock lleno. Es más: tengo un generador especialmente calibrado para sacarte una sonrisa en menos de tres segundos.</p>
+              <button class="btn btn-light smiles-button" id="smiles-button" type="button">
+                Necesito una dosis de felicidad
+                <span class="btn-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+
+            <div class="smiles-card-wrap" aria-live="polite">
+              <article class="smiles-card" id="smiles-card">
+                <span class="smiles-card-top" aria-hidden="true">
+                  <span class="smiles-card-dot"></span>
+                  <span>MENSAJE PARA VOS</span>
+                  <span class="smiles-card-star">✦</span>
+                </span>
+                <p class="smiles-card-text" id="smiles-text">Tocá el botón y dejame intentar sacarte una sonrisa.</p>
+                <span class="smiles-card-sign" aria-hidden="true">Con amor, siempre.</span>
+                <span class="smiles-card-corner" aria-hidden="true">♥</span>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== RAZONES ===================== -->
+      <section class="section reasons-section" id="razones" data-nav-section aria-labelledby="reasons-title">
+        <div class="section-inner">
+          <header class="section-heading section-heading--center" data-reveal>
+            <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>Pequeñas razones</p>
+            <h2 id="reasons-title">Razones por las que te quiero, <em>sin hacer trampa</em>.</h2>
+            <p class="section-lede">Podría escribir mil. Elegí algunas para que no te aburras. (Mentira: podría escribir mil y no me aburriría yo.)</p>
+          </header>
+
+          <div class="reasons-grid" id="reasons-grid">
+            <!-- Las tarjetas se generan desde CONFIG.reasons en script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== TÉRMINOS ===================== -->
+      <section class="section terms-section" id="terminos" data-nav-section aria-labelledby="terms-title">
+        <div class="section-inner">
+          <header class="section-heading section-heading--center" data-reveal>
+            <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>Documento oficial del amor</p>
+            <h2 id="terms-title">Términos y condiciones <em>del amor</em>.</h2>
+            <p class="section-lede">Documento importante. Se recomienda leer cuidadosamente antes de continuar.</p>
+          </header>
+
+          <div class="terms-document" id="terms-document" data-reveal>
+            <div class="terms-tricolor" aria-hidden="true"></div>
+            <div class="terms-watermark" aria-hidden="true">AMOR</div>
+
+            <div class="terms-letterhead">
+              <div class="terms-registry">
+                <span class="terms-seal-small" aria-hidden="true">♥</span>
+                <span>
+                  <strong>REGISTRO DEL AMOR</strong>
+                  <small>Expediente N.º 003 · Tricolor</small>
+                </span>
+              </div>
+              <span class="terms-status">VIGENTE PARA SIEMPRE</span>
+            </div>
+
+            <h3 class="terms-heading">ACUERDO OFICIAL DE AMOR Y CONSENTIMIENTO PARA RECIBIR MIMOS</h3>
+            <p class="terms-intro">
+              Entre <strong>la persona que te quiere</strong> (en adelante, “yo”) y <strong>vos</strong>
+              (en adelante, “mi persona favorita”), se celebra el presente acuerdo de cariño,
+              mimos y complicidad. Ambas partes declaran haber llegado hasta acá por voluntad propia
+              y con una sonrisa.
+            </p>
+
+            <ol class="terms-clauses">
+              <li>
+                <span class="clause-number">CLÁUSULA 1</span>
+                <div>
+                  <h4>Derecho a recibir amor</h4>
+                  <p>La persona que acepta reconoce que tiene derecho a recibir cariño, abrazos y mensajes románticos. Incluso los martes. Incluso sin motivo. Incluso si hoy no se siente digna de eso (spoiler: lo es).</p>
+                </div>
+              </li>
+              <li>
+                <span class="clause-number">CLÁUSULA 2</span>
+                <div>
+                  <h4>Mimos ilimitados</h4>
+                  <p>Se establece que los mimos podrán solicitarse en cualquier momento, sujetos a disponibilidad de abrazos. La disponibilidad habitual es del 100 %, salvo que esté dormido, en cuyo caso se aceptan reservas para el día siguiente.</p>
+                </div>
+              </li>
+              <li>
+                <span class="clause-number">CLÁUSULA 3</span>
+                <div>
+                  <h4>Prohibición de olvidar lo importante</h4>
+                  <p>La persona acepta que es muy querida y que no debe olvidarlo bajo ninguna circunstancia. Si lo olvida, este documento faculta a la otra parte a recordárselo con abrazos, memes y mensajes inesperados.</p>
+                </div>
+              </li>
+              <li>
+                <span class="clause-number">CLÁUSULA 4</span>
+                <div>
+                  <h4>Memes y chistes internos</h4>
+                  <p>Se autoriza el envío ilimitado de memes, chistes malos y contenido que solamente ambas personas entienden. La calidad del chiste no será motivo de rescisión. La risa, aunque sea por compromiso, cuenta como cumplimiento.</p>
+                </div>
+              </li>
+              <li>
+                <span class="clause-number">CLÁUSULA 5</span>
+                <div>
+                  <h4>Renovación automática</h4>
+                  <p>Este acuerdo se renueva automáticamente cada día, sin necesidad de trámites adicionales. No requiere firma, ni sello, ni recordatorio. Funciona incluso cuando no estamos hablando y, sobre todo, cuando sí.</p>
+                </div>
+              </li>
+              <li>
+                <span class="clause-number">CLÁUSULA 6</span>
+                <div>
+                  <h4>Beneficios exclusivos</h4>
+                  <p>La aceptación otorga acceso prioritario a besos, abrazos y momentos especiales. También incluye canciones dedicadas, mensajes de buenos días y la obligación mutua de mandar fotos de perros o gatos cuando el día lo amerite.</p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="terms-acceptance">
+              <label class="terms-check" for="terms-checkbox">
+                <input type="checkbox" id="terms-checkbox">
+                <span class="terms-check-box" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"></path></svg>
+                </span>
+                <span>He leído y acepto los términos y condiciones de este acuerdo.</span>
+              </label>
+
+              <button class="btn btn-primary terms-button" id="terms-accept" type="button" disabled>
+                ACEPTO LOS TÉRMINOS <span aria-hidden="true">❤️</span>
+              </button>
+              <p class="terms-legal">Sin letra chica. Sin validez legal. Con muchísimo valor sentimental.</p>
+            </div>
+
+            <div class="terms-confirmation" id="terms-confirmation" hidden>
+              <div class="terms-stamp" aria-hidden="true">
+                <span class="terms-stamp-inner">
+                  <span class="stamp-heart">♥</span>
+                  <strong>OFICIALMENTE</strong>
+                  <span>ACEPTADO</span>
+                </span>
+              </div>
+              <div class="terms-confirmation-copy">
+                <p class="terms-confirmation-kicker">DOCUMENTO REGISTRADO</p>
+                <h4>OFICIALMENTE ACEPTADO</h4>
+                <p>JAJAJA, ya aceptaste. No hay vuelta atrás... Ahora oficialmente tenés un contrato de amor conmigo. <span aria-hidden="true">❤️</span></p>
+                <p class="terms-confirmation-note">Este documento no tiene validez legal, pero sí muchísimo valor sentimental.</p>
+              </div>
+              <div class="terms-confetti" id="terms-confetti" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SOBRES ===================== -->
+      <section class="section envelopes-section" id="sobres" data-nav-section aria-labelledby="envelopes-title">
+        <div class="section-inner">
+          <header class="section-heading section-heading--center" data-reveal>
+            <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>Sobres secretos</p>
+            <h2 id="envelopes-title">Cuatro sobres para cuando <em>me necesites</em>.</h2>
+            <p class="section-lede">No hace falta que los abras en orden. No hace falta que los abras hoy. Están acá para cuando sí.</p>
+          </header>
+
+          <div class="envelopes-grid" id="envelopes-grid">
+            <!-- Los sobres se generan desde CONFIG.secretEnvelopes en script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== REGALO ===================== -->
+      <section class="section gift-section" id="regalo" data-nav-section aria-labelledby="gift-title">
+        <div class="gift-bg" aria-hidden="true">
+          <span class="gift-bg-orb"></span>
+          <span class="gift-bg-line gift-bg-line--one"></span>
+          <span class="gift-bg-line gift-bg-line--two"></span>
+        </div>
+
+        <div class="section-inner gift-layout">
+          <div class="gift-copy" data-reveal>
+            <p class="eyebrow eyebrow--light"><span class="eyebrow-line" aria-hidden="true"></span>El último detalle</p>
+            <h2 id="gift-title">Guardé algo para el <em>final</em>.</h2>
+            <p class="section-lede">Porque las sorpresas también se cuidan. Y porque me gusta imaginarte llegando hasta acá con una sonrisa.</p>
+            <p class="gift-instruction">Tocá la caja. Sí, esta vez también es literal.</p>
+          </div>
+
+          <div class="gift-stage" data-reveal>
+            <div class="gift-glow" aria-hidden="true"></div>
+            <button class="gift" id="gift" type="button" aria-expanded="false" aria-controls="gift-reveal" aria-label="Abrir el regalo sorpresa">
+              <span class="gift-shadow" aria-hidden="true"></span>
+              <span class="gift-object">
+                <span class="gift-body">
+                  <span class="gift-face gift-face--front"></span>
+                  <span class="gift-face gift-face--right"></span>
+                  <span class="gift-face gift-face--left"></span>
+                  <span class="gift-face gift-face--back"></span>
+                  <span class="gift-ribbon gift-ribbon--vertical"></span>
+                  <span class="gift-ribbon gift-ribbon--horizontal"></span>
+                  <span class="gift-shine" aria-hidden="true"></span>
+                </span>
+                <span class="gift-lid">
+                  <span class="gift-lid-top"></span>
+                  <span class="gift-lid-front"></span>
+                  <span class="gift-lid-side"></span>
+                  <span class="gift-bow">
+                    <span class="gift-bow-loop gift-bow-loop--left"></span>
+                    <span class="gift-bow-loop gift-bow-loop--right"></span>
+                    <span class="gift-bow-knot"></span>
+                  </span>
+                </span>
+                <span class="gift-inner-glow" aria-hidden="true"></span>
+              </span>
+              <span class="gift-cta">Abrir mi regalo <span aria-hidden="true">↗</span></span>
+            </button>
+
+            <div class="gift-reveal" id="gift-reveal" hidden>
+              <div class="gift-reveal-heart" aria-hidden="true">
+                <span class="mini-heart mini-heart--gift"></span>
+              </div>
+              <p class="gift-reveal-kicker">SORPRESA</p>
+              <p class="gift-reveal-text" id="gift-reveal-text"></p>
+              <p class="gift-reveal-sign">Con amor, siempre. <span aria-hidden="true">❤️</span></p>
+              <div class="gift-confetti" id="gift-confetti" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="site-footer">
+      <div class="footer-tricolor" aria-hidden="true"></div>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="tricolor-dot" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>NACIONAL <span class="footer-heart">♥</span> AMOR</span>
+        </div>
+        <p class="footer-message">Hecho especialmente para vos. Con amor, siempre.</p>
+        <p class="footer-small">Este pequeño universo va a seguir existiendo cada vez que quieras volver.</p>
+        <button class="btn btn-footer" id="back-to-top" type="button">
+          Volver a empezar <span aria-hidden="true">❤️</span>
+        </button>
+        <p class="footer-credit">Azul, rojo y blanco. Como nosotros.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============================================================
+       DIÁLOGO: ÍNDICE
+       ============================================================ -->
+  <dialog class="index-dialog" id="index-dialog" aria-labelledby="index-title">
+    <div class="index-sheet">
+      <div class="index-head">
+        <div>
+          <p class="eyebrow eyebrow--light"><span class="eyebrow-line" aria-hidden="true"></span>Índice</p>
+          <h2 id="index-title">Un recorrido por <em>nuestro universo</em>.</h2>
+        </div>
+        <button class="dialog-close dialog-close--light" type="button" data-close-dialog aria-label="Cerrar índice">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+        </button>
+      </div>
+
+      <nav class="index-nav" aria-label="Secciones de la experiencia">
+        <a href="#inicio" data-index-link><span>01</span><strong>Nuestro universo</strong><small>El lugar donde empieza todo</small></a>
+        <a href="#corazon" data-index-link><span>02</span><strong>El corazón tricolor</strong><small>La parte que más me importa</small></a>
+        <a href="#carta" data-index-link><span>03</span><strong>Una carta para vos</strong><small>Palabras que se quedan</small></a>
+        <a href="#momentos" data-index-link><span>04</span><strong>Nuestros momentos</strong><small>Memes, risas y complicidad</small></a>
+        <a href="#sonrisas" data-index-link><span>05</span><strong>Rincón de las sonrisas</strong><small>Felicidad instantánea</small></a>
+        <a href="#razones" data-index-link><span>06</span><strong>Pequeñas razones</strong><small>Por qué te quiero</small></a>
+        <a href="#terminos" data-index-link><span>07</span><strong>Términos del amor</strong><small>Un contrato muy serio (mentira)</small></a>
+        <a href="#sobres" data-index-link><span>08</span><strong>Sobres secretos</strong><small>Para cuando me necesites</small></a>
+        <a href="#regalo" data-index-link><span>09</span><strong>Regalo sorpresa</strong><small>El final que no es final</small></a>
+      </nav>
+
+      <p class="index-foot">Podés volver a este índice desde el botón de arriba, siempre que quieras.</p>
+    </div>
+  </dialog>
+
+  <!-- ============================================================
+       DIÁLOGO: CARTA
+       ============================================================ -->
+  <dialog class="letter-dialog" id="letter-dialog" aria-labelledby="letter-dialog-title">
+    <div class="letter-paper">
+      <div class="letter-ribbon" aria-hidden="true"></div>
+      <button class="dialog-close letter-close" type="button" data-close-dialog aria-label="Cerrar carta">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+
+      <div class="letter-paper-head">
+        <span class="letter-paper-mark" aria-hidden="true">♥</span>
+        <span>PARA VOS, SIEMPRE</span>
+      </div>
+
+      <h2 id="letter-dialog-title">Una carta para vos</h2>
+      <div class="letter-body" id="letter-body">
+        <!-- El contenido de la carta se genera desde CONFIG.letter en script.js -->
+      </div>
+      <p class="letter-signature" id="letter-signature"></p>
+      <div class="letter-paper-footer">
+        <span class="tricolor-dot" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Escrita con calma, enviada con amor.</span>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ============================================================
+       DIÁLOGO: GALERÍA
+       ============================================================ -->
+  <dialog class="gallery-dialog" id="gallery-dialog" aria-labelledby="gallery-dialog-title">
+    <div class="gallery-modal">
+      <button class="dialog-close dialog-close--light" type="button" data-close-dialog aria-label="Cerrar imagen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+
+      <div class="gallery-modal-media" id="gallery-modal-media">
+        <img id="gallery-modal-image" src="" alt="">
+        <div class="gallery-modal-placeholder" id="gallery-modal-placeholder" hidden>
+          <span class="placeholder-stripes" aria-hidden="true"><i></i><i></i><i></i></span>
+          <strong>Este recuerdo todavía no tiene imagen</strong>
+          <span id="gallery-modal-path">assets/meme-01.jpg</span>
+        </div>
+      </div>
+
+      <div class="gallery-modal-copy">
+        <p class="gallery-modal-kicker">NUESTRO PEQUEÑO MOMENTO</p>
+        <h2 id="gallery-dialog-title">Título del recuerdo</h2>
+        <p id="gallery-modal-description">Descripción</p>
+        <span class="gallery-modal-stamp" aria-hidden="true">NACIONAL <span>♥</span> AMOR</span>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    // Fallback mínimo de carga: si por alguna razón el script principal no
+    // ejecuta, la pantalla de acceso sigue siendo visible y funcional.
+    document.documentElement.classList.add('js-ready');
+  </script>
+  <script>
+    // SOLO QA: desbloqueo automático y fallback forzado para capturas.
+    if (new URLSearchParams(location.search).get("fallback") === "1") {
+      try {
+        Object.defineProperty(window, "WebGLRenderingContext", { value: undefined, configurable: true });
+      } catch (error) {}
+    }
+    window.addEventListener("error", function (event) {
+      var box = document.getElementById("qa-error");
+      if (!box) { box = document.createElement("pre"); box.id = "qa-error"; document.body.appendChild(box); }
+      box.textContent += "ERROR: " + event.message + " @ " + event.filename + ":" + event.lineno + "\n";
+    });
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        var input = document.getElementById("password");
+        var form = document.getElementById("gate-form");
+        if (!input || !form) return;
+        input.value = "Nacionalteamo1";
+        if (form.requestSubmit) form.requestSubmit();
+        else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      }, 150);
+    });
+  </script></body>
+</html>

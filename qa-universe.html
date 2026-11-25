@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QA universo</title>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    iframe { display: block; width: 100vw; height: 100vh; border: 0; }
+    #qa { position: fixed; z-index: 99999; inset: 8px 8px auto auto; max-width: 320px; max-height: 90vh; overflow: auto; padding: 10px; background: rgba(0,0,0,.85); color: #9f9; font: 11px/1.4 monospace; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <iframe id="frame" src="index.html"></iframe>
+  <pre id="qa">waiting</pre>
+  <script>
+    const frame = document.getElementById("frame");
+    const qa = document.getElementById("qa");
+    const params = new URLSearchParams(location.search);
+    const frameWidth = Number(params.get("w") || 0);
+    const frameHeight = Number(params.get("h") || 0);
+    if (frameWidth) {
+      frame.style.width = frameWidth + "px";
+      frame.style.height = (frameHeight || 844) + "px";
+    }
+    if (params.get("clean") === "1") {
+      qa.style.display = "none";
+    }
+    const errors = [];
+    const payload = {};
+
+    frame.addEventListener("load", () => {
+      const win = frame.contentWindow;
+      const doc = frame.contentDocument;
+
+      win.addEventListener("error", (event) => {
+        errors.push("error: " + event.message + " @ " + event.filename + ":" + event.lineno);
+      });
+      win.addEventListener("unhandledrejection", (event) => {
+        errors.push("rejection: " + (event.reason && event.reason.message ? event.reason.message : String(event.reason)));
+      });
+
+      payload.three = typeof win.THREE;
+      payload.gateHiddenBefore = doc.getElementById("gate").hidden;
+      payload.experienceInertBefore = doc.getElementById("experience").inert;
+
+      setTimeout(() => {
+        const input = doc.getElementById("password");
+        input.value = "Nacionalteamo1";
+        const form = doc.getElementById("gate-form");
+        if (form.requestSubmit) form.requestSubmit();
+        else form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      }, 350);
+
+      setTimeout(() => {
+        const stage = doc.getElementById("universe-stage");
+        const canvas = doc.getElementById("universe-canvas");
+        const loader = doc.getElementById("universe-loader");
+        const note = doc.getElementById("universe-photo-note");
+        const fallback = doc.getElementById("universe-fallback");
+        const status = doc.getElementById("universe-status");
+
+        payload.bodyClass = doc.body.className;
+        payload.gateHiddenAfter = doc.getElementById("gate").hidden;
+        payload.experienceInertAfter = doc.getElementById("experience").inert;
+        payload.stageClass = stage ? stage.className : "missing";
+        payload.stageRect = stage ? [Math.round(stage.getBoundingClientRect().width), Math.round(stage.getBoundingClientRect().height)] : null;
+        payload.canvasSize = canvas ? [canvas.width, canvas.height, Math.round(canvas.getBoundingClientRect().width), Math.round(canvas.getBoundingClientRect().height)] : null;
+        payload.loaderHidden = loader ? (loader.hidden || loader.classList.contains("is-hidden")) : null;
+        payload.noteHidden = note ? note.hidden : null;
+        payload.fallbackDisplay = fallback ? win.getComputedStyle(fallback).display : null;
+        payload.status = status ? status.textContent : null;
+        payload.scrollWidth = doc.documentElement.scrollWidth;
+        payload.innerWidth = win.innerWidth;
+        payload.errors = errors;
+
+        const gl = canvas ? (canvas.getContext("webgl2") || canvas.getContext("webgl")) : null;
+        payload.webgl = Boolean(gl);
+        if (gl) {
+          payload.glRenderer = gl.getParameter(gl.RENDERER);
+        }
+
+        qa.textContent = JSON.stringify(payload, null, 2);
+        document.title = "QA " + (payload.stageClass || "?") + " errors=" + errors.length;
+      }, 6500);
+    });
+  </script>
+</body>
+</html>

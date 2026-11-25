@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071B35">
+  <meta name="description" content="Un pequeño universo tricolor hecho con amor, exclusivamente para vos.">
+  <title>Nacional te amo · Un lugar para vos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets/three.min.js" defer></script>
+  <script src="script.js" defer></script>
+  <script src="universe.js" defer></script>
+</head>
+<body class="is-locked">
+
+  <!-- Silueta de corazón reutilizable para recortar la escultura y la foto. -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+        <path d="M0.5 0.955C0.445 0.885 0.055 0.63 0.055 0.345C0.055 0.16 0.19 0.035 0.345 0.035C0.425 0.035 0.478 0.082 0.5 0.145C0.522 0.082 0.575 0.035 0.655 0.035C0.81 0.035 0.945 0.16 0.945 0.345C0.945 0.63 0.555 0.885 0.5 0.955Z"></path>
+      </clipPath>
+    </defs>
+  </svg>
+
+
+  <!-- ============================================================
+       ACCESO PRIVADO
+       La contraseña se valida en script.js. No se guarda en el navegador.
+       ============================================================ -->
+  <section id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate-backdrop" aria-hidden="true">
+      <span class="gate-orb gate-orb--blue"></span>
+      <span class="gate-orb gate-orb--red"></span>
+      <span class="gate-orb gate-orb--white"></span>
+      <span class="gate-grid"></span>
+      <span class="gate-heart gate-heart--1"><i></i></span>
+      <span class="gate-heart gate-heart--2"><i></i></span>
+      <span class="gate-heart gate-heart--3"><i></i></span>
+      <span class="gate-heart gate-heart--4"><i></i></span>
+      <span class="gate-heart gate-heart--5"><i></i></span>
+    </div>
+
+    <div class="gate-shell">
+      <div class="gate-brand" aria-label="Nacional y amor">
+        <span class="tricolor-dot" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>NACIONAL</span>
+        <span class="gate-brand-x" aria-hidden="true">×</span>
+        <span>El amor de mi vida</span>
+      </div>
+
+      <div class="gate-card" id="gate-card">
+        <div class="gate-card-shine" aria-hidden="true"></div>
+        <span class="gate-eyebrow" id="gate-eyebrow">UN LUGAR MUY ESPECIAL</span>
+        <h1 id="gate-title">Hay un lugar al que solamente <em>vos</em> podés entrar...</h1>
+        <p class="gate-subtitle" id="gate-subtitle">Esta pequeña sorpresa tiene una única destinataria.</p>
+
+        <form id="gate-form" class="gate-form" novalidate>
+          <label for="password" id="gate-label">Tu llave secreta</label>
+          <div class="password-field">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="off"
+              autocapitalize="none"
+              spellcheck="false"
+              aria-describedby="password-hint password-error"
+              placeholder="Escribí la contraseña"
+              required
+            >
+            <button type="button" class="password-toggle" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false">
+              <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                <circle cx="12" cy="12" r="2.7"></circle>
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m4 4 16 16M9.9 5.2A10.8 10.8 0 0 1 12 5c6 0 9.5 6 9.5 6a15.6 15.6 0 0 1-2.3 3M6.2 6.8C3.8 8.4 2.5 11 2.5 11s3.5 6 9.5 6a10 10 0 0 0 4.3-.9"></path>
+              </svg>
+            </button>
+          </div>
+
+          <p id="password-hint" class="gate-hint">Pista: tres colores, un sentimiento y un número.</p>
+          <p id="password-error" class="form-error" role="alert" aria-live="polite"></p>
+
+          <button type="submit" class="btn btn-primary gate-submit" id="gate-submit">
+            <span class="btn-label">Descubrir mi sorpresa</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+            <span class="gate-success-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"></path></svg>
+            </span>
+          </button>
+        </form>
+
+        <div class="gate-card-footer">
+          <span class="gate-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.5"></rect><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"></path></svg>
+          </span>
+          <span id="gate-footer-text">Hecho con amor, exclusivamente para vos.</span>
+        </div>
+      </div>
+
+      <p class="gate-footnote" id="gate-footnote">Un pequeño universo azul, rojo y blanco. Como nosotros.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       UNIVERSO 3D · ocupa el 100% de la pantalla tras el acceso.
+       No hay header, menú, tarjetas ni secciones: solo el escenario.
+       ============================================================ -->
+  <div class="experience" id="experience" inert aria-hidden="true">
+    <div class="universe-stage" id="universe-stage" aria-label="Universo 3D. Deslizá para mirar a tu alrededor.">
+      <canvas class="universe-canvas" id="universe-canvas"></canvas>
+
+      <!-- Alternativa si el dispositivo no soporta WebGL -->
+      <div class="universe-fallback" id="universe-fallback" hidden>
+        <img id="universe-fallback-img" alt="" hidden>
+        <p class="universe-fallback-text" id="universe-fallback-text"></p>
+      </div>
+
+      <div class="universe-veil" id="universe-veil"></div>
+      <div class="universe-loader" id="universe-loader" role="status" aria-live="polite">
+        <span class="universe-loader-rings" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span id="universe-loader-text">Cargando la galaxia del amor de mi vida</span>
+      </div>
+
+      <p class="universe-welcome" id="universe-welcome" hidden>Bienvenida a nuestra galaxia teamo mivida❤️💙🤍</p>
+      <p class="universe-hint" id="universe-hint" hidden>Deslizá para mirar alrededor · tocá una foto o un regalo 💙</p>
+      <p class="universe-status" id="universe-status" role="status" aria-live="polite"></p>
+
+      <div class="universe-tools">
+        <button class="universe-btn" id="universe-gyro" type="button" hidden aria-pressed="false" aria-label="Usar el movimiento del teléfono">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.4"></rect><path d="M11 18h2"></path></svg>
+        </button>
+        <button class="universe-btn" id="universe-reset" type="button" aria-label="Volver a centrar la vista">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SORPRESAS · aparece solo al tocar una foto o un regalo 3D.
+       Todos los textos se editan en UNIVERSE_CONFIG.texts (universe.js).
+       ============================================================ -->
+  <div class="surprise-overlay" id="surprise-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="surprise-title">
+    <div class="surprise-panel" id="surprise-panel">
+      <button class="surprise-close" id="surprise-close" type="button" aria-label="Cerrar sorpresa">×</button>
+      <span class="surprise-kicker" id="surprise-kicker">UN MENSAJE PARA VOS</span>
+      <h2 class="surprise-title" id="surprise-title"></h2>
+      <figure class="surprise-photo" id="surprise-photo" hidden>
+        <img id="surprise-img" alt="" decoding="async">
+      </figure>
+      <div class="surprise-body" id="surprise-body"></div>
+      <p class="surprise-sign" id="surprise-sign"></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+CÓMO PERSONALIZAR EL REGALO (versión chica y romántica)
+=======================================================
+
+Todo se edita en un solo lugar: universe.js → UNIVERSE_CONFIG.
+No hace falta tocar nada más. Está dividido en 5 bloques.
+
+-----------------------------------------------------------
+1) FOTO DEL MEDIO  (no la cambies de lugar)
+-----------------------------------------------------------
+Reemplazá el archivo assets/foto-central.jpg por tu foto,
+con ese mismo nombre. El centro (corazón, marco, órbitas)
+queda igual que antes.
+
+photo.position = recorte de la foto.
+  "50% 50%" = centro
+  "50% 30%" = muestra más la parte de arriba
+
+-----------------------------------------------------------
+2) TEXTOS  ← EDITÁ SOLO ACÁ
+-----------------------------------------------------------
+Dentro de UNIVERSE_CONFIG.texts:
+
+  welcome      = frase de bienvenida al entrar
+  hint         = pista abajo de la pantalla
+  centerKicker = etiqueta chica de la foto del medio
+  centerTitle  = título de la sorpresa del medio
+  centerText   = mensaje de la foto del medio
+  centerSign   = firma del medio
+  memoryKicker = etiqueta de cada foto alrededor
+  giftKicker   = etiqueta de cada regalo
+  roseTap      = mensajito al tocar una rosa
+
+No hay frases flotantes ni cintas: se sacaron todas.
+
+-----------------------------------------------------------
+3) FOTOS ALREDEDOR
+-----------------------------------------------------------
+Cada línea de memories[] = una foto. Agregá todas las que
+quieras copiando una línea y cambiando los datos:
+
+  src   = "assets/recuerdo-01.jpg" (o el nombre que quieras)
+  az    = giro: 0 = frente, + = derecha, - = izquierda
+  el    = altura: - = abajo, + = arriba
+  r     = distancia: entre 9 y 13 se ve bien en celular
+  title = título de la sorpresa
+  text  = frase corta (una sola oración queda mejor)
+  sign  = firma
+
+Si el archivo no existe, se ve un lugar lindo para tu foto
+y la experiencia no se rompe.
+
+-----------------------------------------------------------
+4) REGALOS CHICOS (4 por defecto)
+-----------------------------------------------------------
+Dentro de gifts[]. Tipos disponibles:
+  "box"    cajita que se abre
+  "heart"  corazón tricolor
+  "star"   estrella
+
+Se sacaron los cofres, los sobres y las cartas.
+Campos:
+  type  = box / heart / star
+  az, el, r = posición (igual que las fotos)
+  size  = 0.8 a 1 se ve bien en el celular
+  title, text, sign = mensaje de la sorpresa
+  photo = opcional, "assets/mi-foto.jpg"
+
+-----------------------------------------------------------
+5) CENTRO / COLORES
+-----------------------------------------------------------
+galaxy = tamaño y profundidad del corazón de partículas.
+Dejalo como está si ya te gusta.
+
+Colores: UNIVERSE_PALETTE, arriba de universe.js.
+  azul #003B70 · rojo #D71920 · blanco #FFFFFF
+
+-----------------------------------------------------------
+6) PANTALLA DE ACCESO Y CONTRASEÑA  (script.js)
+-----------------------------------------------------------
+En script.js → CONFIG.gate están TODOS los textos de la
+pantalla de la contraseña (título, pista, botón, errores).
+CONFIG.password =contraseña. Por defecto: Nacionalteamo1
+(distingue mayúsculas).
+
+-----------------------------------------------------------
+CELULAR
+-----------------------------------------------------------
+La escena usa menos partículas en pantallas chicas y se
+adapta solo. Probá siempre en el teléfono: las fotos y los
+regalos se tocan con el dedo, y las sorpresas se abren en
+una tarjeta que entra entera en la pantalla.
