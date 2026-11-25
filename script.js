@@ -170,3 +170,95 @@ if (document.readyState === "loading") {
 } else {
   initPasswordGate();
 }
+
+/* Música de fondo: integración aislada, sin UI y sin tocar el acceso existente. */
+(function initBackgroundMusic() {
+  const AUDIO_SRC = "assets/musica.mp3";
+  const START_VOLUME = 0.25;
+  const START_EVENTS = ["pointerdown", "click", "keydown"];
+  let audio = null;
+  let started = false;
+  let waitingForGesture = false;
+
+  const removeGestureListeners = () => {
+    if (!waitingForGesture) return;
+    waitingForGesture = false;
+    START_EVENTS.forEach((type) => document.removeEventListener(type, onFirstGesture));
+  };
+
+  const addGestureListeners = () => {
+    if (waitingForGesture || started) return;
+    waitingForGesture = true;
+    START_EVENTS.forEach((type) => document.addEventListener(type, onFirstGesture));
+  };
+
+  const tryPlay = () => {
+    if (started || !audio || !audio.paused) return;
+
+    const handleBlock = (error) => {
+      if (error && error.name === "NotAllowedError") addGestureListeners();
+    };
+
+    try {
+      const playback = audio.play();
+      if (playback && typeof playback.then === "function") {
+        playback.then(
+          () => {
+            started = true;
+            removeGestureListeners();
+          },
+          handleBlock
+        );
+      } else {
+        started = true;
+        removeGestureListeners();
+      }
+    } catch (error) {
+      handleBlock(error);
+    }
+  };
+
+  function onFirstGesture() {
+    removeGestureListeners();
+    tryPlay();
+  }
+
+  const startMusic = () => {
+    if (started || audio) return;
+    audio = new Audio(AUDIO_SRC);
+    audio.volume = START_VOLUME;
+    audio.loop = true;
+    tryPlay();
+  };
+
+  const startWhenGateHidden = () => {
+    const gate = document.getElementById("gate");
+    if (!gate || gate.hidden || gate.getAttribute("aria-hidden") === "true") {
+      startMusic();
+      return;
+    }
+
+    const gateObserver = new MutationObserver(() => {
+      if (!gate.hidden && gate.getAttribute("aria-hidden") !== "true") return;
+      gateObserver.disconnect();
+      startMusic();
+    });
+    gateObserver.observe(gate, {
+      attributes: true,
+      attributeFilter: ["hidden", "aria-hidden"]
+    });
+  };
+
+  const onUnlock = () => {
+    if (!document.body.classList.contains("unlocked")) return;
+    bodyObserver.disconnect();
+    startWhenGateHidden();
+  };
+
+  const bodyObserver = new MutationObserver(onUnlock);
+  bodyObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+  if (document.body.classList.contains("unlocked")) onUnlock();
+})();

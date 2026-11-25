@@ -441,7 +441,7 @@ function uLoadImage(src) {
     img.decoding = "async";
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
-    img.src = src;
+    img.src = (window.__PHOTO_DATA_URLS__ && window.__PHOTO_DATA_URLS__[src]) || src;
   });
 }
 
@@ -681,7 +681,7 @@ function uBuildUniverse(ctx) {
   photoGroup.position.set(0, 0, -10);
   scene.add(photoGroup);
   const makePhoto = (w, h, tex, k) => {
-    const mat = new THREE.MeshStandardMaterial({ map: tex, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.5, roughness: 0.4, metalness: 0 });
+    const mat = new THREE.MeshStandardMaterial({ color: 0x000000, map: tex, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 1, roughness: 0.4, metalness: 0, envMapIntensity: 0, fog: false, toneMapped: false });
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
     const g = new THREE.Group();
     g.add(mesh, uTriFrame(w, h, M, k));
@@ -742,7 +742,7 @@ function uBuildUniverse(ctx) {
     interactive.push(photo.mesh);
     floaters.push({ o: photo.g, y: pos.y, a: 0.1, f: 0.5 + i * 0.07, p: i });
     scene.add(photo.g);
-    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false, opacity: 0.5 }));
+    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false, opacity: 0.16 }));
     glow.scale.setScalar(5.5); glow.position.z = -0.6; photo.g.add(glow);
     return photo;
   });
@@ -907,6 +907,16 @@ let universeStarted = false;
 window.startUniverse = async function startUniverse() {
   if (universeStarted) return;
   universeStarted = true;
+
+  if (location.protocol === "file:" && !window.__PHOTO_DATA_URLS__) {
+    await new Promise((resolve) => {
+      const s = document.createElement("script");
+      s.src = "assets/photos-data.js";
+      s.onload = resolve;
+      s.onerror = resolve;
+      document.head.appendChild(s);
+    });
+  }
 
   const stage = document.getElementById("universe-stage");
   const canvas = document.getElementById("universe-canvas");
@@ -1229,7 +1239,7 @@ window.startUniverse = async function startUniverse() {
     const fadeBg = uStep(p, 0.1, 0.8);
     U.starsFar.material.opacity = fadeBg; U.starsNear.material.opacity = fadeBg; U.dust.material.opacity = 0.6 * fadeBg;
     U.nebulae.forEach((n) => { n.material.opacity = n.userData.o * fadeBg; });
-    U.halo.material.opacity = 0.75 * uStep(p, 0.2, 0.9);
+    U.halo.material.opacity = 0.25 * uStep(p, 0.2, 0.9);
     U.sparks.forEach((s) => { const d = s.userData; s.material.opacity = fadeBg * (0.25 + 0.75 * Math.abs(Math.sin(t * d.sp + d.ph))); s.scale.setScalar(d.base * (0.7 + 0.3 * Math.sin(t * d.sp * 1.3 + d.ph))); });
 
     /* El corazón central se enciende y late; la espiral gira lentamente. */
